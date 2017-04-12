@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>A Look at Demonetization</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Plugin CSS -->
+    <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="css/creative.css" rel="stylesheet">
+
+	<script src="js/data/project-static-data.js"></script>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	
+	<script type="text/javascript">
+    google.charts.load('current', {'packages':['scatter','wordtree','bar']});
+
+	  $(document).ready(function() {
+	    	/*var scatterNovNewsData = [];
+	    	var scatterDecNewsData = [];
+	    	var scatterAllNewsData = [];
+	    	var scatterNovTweetData = [];
+	    	var scatterLatestTweetData = [];
+	    	var newsWordTreeData = [];
+	    	var tweetsWordTreeData = [];
+	    	
+	    	var barChartNewsData = [];
+	    	var barChartTweetsData = [];
+	    	newsBarChartheaderRow = ["News Duration","positive","negative","neutral"];
+	    	tweetsBarChartheaderRow = ["Tweets Duration","positive","negative","neutral"];
+	    	barChartNewsData.push(newsBarChartheaderRow);
+	    	barChartTweetsData.push(tweetsBarChartheaderRow);*/	    	
+	    	//getBarChartData("news","date:11/*/2016",'Nov 2016');
+	    	//getBarChartData("news","date:12/*/2016",'Dec 2016');	    		    	
+	    	//getBarChartData("news","*:*",'All');
+	    	//getBarChartData("tweets","created:11/*/2016",'Nov 2016');
+	    	//getBarChartData("tweets","*:*",'All');
+	    	
+	    	/*getNewsDataForScatterChart();
+	    	getTweetDataForScatterChart();
+	    	getNewsDataForWordTree();
+	    	getTweetsDataForWordTree();*/
+
+	    	var typeSelected = "";
+	    	var monthSelected = "";
+
+	    	$("#getstarted").hide();
+	    	$("#newsbarchartdiv").hide();
+	    	$("#tweetsbarchartdiv").hide();
+	    	$("#resetSelection").hide();
+	    	$("#newsWordTree").hide();
+	    	$("#tweetsWordTree").hide();
+	    	
+	    	$("#navbuttons").hide();
+	    	$("#contact").hide();
+	    	$("#sep1").hide();
+	    	
+	    	$("#letsstart").on("click",function(){	    		
+	    		$("#newsbarchartdiv").show();
+		    	$("#tweetsbarchartdiv").show();
+	    		google.charts.setOnLoadCallback(drawTweetsBarChart);
+	    		google.charts.setOnLoadCallback(drawNewsBarChart);
+	    		$("#sep1").show();
+	    		printObjects();
+	    	});
+	    	
+	    	function printObjects() {
+	    		//console.log(JSON.stringify(barChartNewsData));
+	    		//console.log(JSON.stringify(barChartTweetsData));
+	    		//console.log(JSON.stringify(newsWordTreeData));
+	    		//console.log(JSON.stringify(tweetsWordTreeData));
+	    		//console.log(JSON.stringify(scatterNovNewsData));
+	    		//console.log(JSON.stringify(scatterNovNewsData));
+	    		//console.log(JSON.stringify(scatterDecNewsData));
+	    		//console.log(JSON.stringify(scatterAllNewsData));
+	    		//console.log(JSON.stringify(scatterNovTweetData));
+	    		//console.log(JSON.stringify(scatterLatestTweetData));
+	    	}
+	    	
+	    	$("#startover").on("click",function(){
+	    		$("#scatter_dual_y").empty();
+	    		$("#newsbarchart").empty();
+	    		$("#tweetsbarchart").empty();	    		
+	    		$("#wordtree").empty();
+	    		
+	    		$("#getstarted").hide();
+	    		$("#newsbarchartdiv").hide();
+		    	$("#tweetsbarchartdiv").hide();
+		    	$("#sep1").hide();
+		    	$("#resetSelection").hide();
+		    	$("#newsWordTree").hide();
+		    	$("#tweetsWordTree").hide();
+		    	
+		    	$("#navbuttons").hide();
+		    	$("#contact").hide();
+	    	});
+	    	
+	    	$("#newsWordTree").on("click",function(){
+	    		$("#wordtree").empty();
+	    		var wordTreeData =  google.visualization.arrayToDataTable(newsWordTreeData);
+				var options = {
+		          wordtree: {
+		            format: 'implicit',
+		            word: 'demonetisation'
+		          },
+		          backgroundColor: '#B3C1F2'
+ 				};
+				
+				var chart = new google.visualization.WordTree(document.getElementById('wordtree'));
+		        chart.draw(wordTreeData, options);
+		        $("#contact").show();
+	    	});
+	    	
+	    	$("#tweetsWordTree").on("click",function(){
+	    		var wordTreeData =  google.visualization.arrayToDataTable(tweetsWordTreeData);
+				var options = {
+		          wordtree: {
+		            format: 'implicit',
+		            word: 'demonetization'
+		          },
+		          backgroundColor: '#B3C1F2'
+ 				};
+				
+				var chart = new google.visualization.WordTree(document.getElementById('wordtree'));
+		        chart.draw(wordTreeData, options);
+		        $("#contact").show();
+	    	});
+	    	
+    		 
+	    	    function drawScatter () {
+	    	    	var scatterData = [];
+	    	    	var data3 = new google.visualization.DataTable();
+	    	    	if(typeSelected == 'tweets') {
+		    	    	data3.addColumn('date','Date');
+		    	    	data3.addColumn('number','# of Positive Tweets');
+		    	    	data3.addColumn('number','# of Negative Tweets');	    	    		
+	    	    		if(monthSelected == 'november') {
+		    	    		data3.addRows(scatterNovTweetData);
+		    	    	} else if(monthSelected == 'latest') {
+		    	    		data3.addRows(scatterLatestTweetData);
+		    	    	}
+	    	    	} else if(typeSelected == 'news') {
+		    	    	data3.addColumn('date','Date');
+		    	    	data3.addColumn('number','# of Positive News');
+		    	    	data3.addColumn('number','# of Negative News');
+		    	    	if(monthSelected == 'november') {
+		    	    		data3.addRows(scatterNovNewsData);
+		    	    	} else if(monthSelected == 'december') {
+		    	    		data3.addRows(scatterDecNewsData);
+		    	    	} else if(monthSelected == 'all') {
+		    	    		data3.addRows(scatterAllNewsData);
+		    	    	}
+	    	    	}
+	    	        
+	    	        var options = {
+	    	          chart: {
+	    	            title: 'Positive and Negative news',
+	    	          },
+	    	          chartArea:{ 
+	    	        	  backgroundColor:'yellow'
+	    	          },
+	    	          width: 800,
+	    	          height: 500,
+	    	          colors:['#004411','red'],
+	    	          series: {
+	    	            0: {axis: 'Positive News'},
+	    	            1: {axis: 'Negative News'}
+	    	          },
+	    	          axes: {
+	    	            y: {
+	    	              'Positive': {label: 'Positive News'},
+	    	              'Negative': {label: 'Negative News'}
+	    	            }
+	    	          }
+	    	        };
+	    	        var chart = new google.charts.Scatter(document.getElementById('scatter_dual_y'));
+	    	        chart.draw(data3, options);
+	    	      } // end of function		
+	    	 
+	    	function drawTweetsBarChart() {
+	    		drawBarChart(barChartTweetsData,'tweetsbarchart');
+	    	}
+	    	      
+	    	function drawNewsBarChart() {
+	    		drawBarChart(barChartNewsData,'newsbarchart');
+	    	}
+	    	
+			function drawBarChart(barchartdata,element){
+				if(element == 'newsbarchart') {
+					title = "News Distribution";
+					groupWidth = '55%';
+				} else if(element == 'tweetsbarchart') {
+					title = "Tweets Distribution";
+					groupWidth = '30%';
+				}
+				var subtitle = 'Click the bar to see ' + title + ' over selected duration.' ;
+				var data = google.visualization.arrayToDataTable(barchartdata);
+	    		var options = {
+	    				    title: title,
+	    				    subtitle: subtitle,
+	    			        width: 500,
+	    			        height: 400,
+	    			        titleTextStyle:{
+	    			        	color:'orange',
+	    			        	fontName: 'Helvetica Neue',
+	    			        	fontSize:30,
+	    			        	bold:true,
+	    			        	italic:true,
+	    			        },
+	    			        legend: { position: 'top', maxLines: 3 },
+	    			        bar: { groupWidth: groupWidth },	    			        
+	    			        isStacked: true,
+	    			        series: {
+	    			            0:{color:'blue'},
+	    			            1:{color:'red'},
+	    			            2:{color:'#FEE0C6'},
+	    			          },	    			              			          
+	    			      };
+	    		 var chart = new google.charts.Bar(document.getElementById(element));
+	    	     chart.draw(data, google.charts.Bar.convertOptions(options));
+	    	     
+	    	     google.visualization.events.addListener(chart, 'select', function() {
+	    	    	  var mediaType = data.getColumnLabel(0);
+	    	    	  var selectedItem = chart.getSelection()[0];
+	    	    	    if (selectedItem) {
+	    	    	      var value = data.getValue(selectedItem.row, selectedItem.column);
+	    	    	      var duration = data.getValue(selectedItem.row,0);
+	    	    	      console.log("value-'" + value + "',duration-'"+duration+"'");
+	    	    	      typeSelected = (mediaType == "News Duration")?"news":"tweets";
+	    	    	      if(duration == 'Nov 2016') {
+	    	    	    	  monthSelected = "november";
+	    	    	      } else if(duration == 'Dec 2016') {
+	    	    	    	  monthSelected = "december";
+	    	    	      } else if(duration == 'All') {
+	    	    	    	  monthSelected = "all";
+	    	    	    	  if(typeSelected == 'tweets') {
+	    	    	    		  monthSelected = "latest";
+	    	    	    	  }
+	    	    	      }	    	    	       
+	    	    	      console.log("typeSelected-'" + typeSelected + "',monthSelected-'"+monthSelected+"'");
+	    	    	      google.charts.setOnLoadCallback(drawScatter);
+	 		    		  $("#navbuttons").show();
+	 		    		  $("#resetSelection").show();
+	 		    		  $("#newsWordTree").show();
+	 		    		  $("#tweetsWordTree").show();
+	 		    		  $("#getstarted").click();
+	    	    	    }
+	    	     });
+	    	}	    	      
+	  });
+
+	  
+	  
+	</script>	
+	
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	
+
+</head>
+
+<body id="page-top">
+
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top" id="startover">Start Over</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                	<!-- <li>
+                        <a class="page-scroll" href="#about">About</a>
+                    </li> -->
+				</ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+                <h1 id="homeHeading">A peek into Demonetization</h1>
+                <br><br><br><br>
+                <a href="atm-maps-static.html" id="atm-strategy" class="btn btn-primary btn-xl page-scroll">Find out ATM deserts</a>
+                <a href="#selectsource" id="letsstart" class="btn btn-primary btn-xl page-scroll">Social Media and News Analysis</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="bg-light" id="selectsource">
+        <div class="container" >
+            <div class="row">
+	            <div class="col-md-6" id="newsbarchartdiv" >
+	           		<div id="newsbarchart"></div>
+	            </div>
+	            <div class="col-md-6" id="tweetsbarchartdiv" >
+	            	<div id="tweetsbarchart"></div>
+	            	<a href="#services" id="getstarted" class="btn btn-primary btn-md page-scroll"></a>	
+	            </div>	            
+            </div>
+        </div>
+    </section>
+    
+    <!--  Separator -->
+	<section class="bg-primary" id="sep1">
+	</section>
+
+    <section id="services" class="bg-light">
+        <div class="container">
+            <div class="row">
+				<div class="col-md-12">
+					<div id="scatter_dual_y"></div>
+			    </div>
+			</div>
+		</div>
+    </section>
+    
+    <section class="bg-primary" id="navbuttons">
+	    <div class="container">
+	    <div class="row">
+				    <div class="col-sm-12">
+						<a href="#selectsource" id="resetSelection" class="btn btn-secondary btn-md page-scroll">Take a loot at another media and duration.</a>	
+						<a href="#sectionwordtree" id="newsWordTree" class="btn btn-secondary btn-md page-scroll">Word Map for News</a>	
+				    	<a href="#sectionwordtree" id="tweetsWordTree" class="btn btn-secondary btn-md page-scroll">Word Map for Tweets</a>	
+				    </div>
+	            </div>		
+	    </div>
+    </section>
+		
+    <section id="sectionwordtree" class="bg-light">
+        <div class="container">
+            <div class="row">
+				<div class="col-sm-12">			
+					<div id="wordtree"></div>
+				</div>
+		    </div>
+        </div>
+    </section>	
+
+
+
+    <section id="contact" class="bg-primary">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">Next Steps</h2>
+                    <hr class="primary">
+					<div class="text-left">
+						<ul>
+						 <li><p> Ingest continuous stream of News from more sources </p></li>
+						 <li><p> Ingest continuous stream of Tweets </p></li>
+						 <li><p> User input driven word tree </p></li>
+						 <li><p> Suggestions !!! </p></li>
+						</ul>
+					</div>
+                </div>
+                <div class="col-lg-4 col-lg-offset-2 text-center">
+                    <i class="fa fa-phone fa-3x sr-contact"></i>
+                    <p>xxx-xxx-xxxx</p>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <i class="fa fa-envelope-o fa-3x sr-contact"></i>
+                    <p><a href="mailto:your-email@your-domain.com" style="color:white">alondhe@icct.com</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery -->
+    <!--<script src="vendor/jquery/jquery.min.js"></script> -->
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
+    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="js/creative.min.js"></script>
+
+</body>
+
+</html>

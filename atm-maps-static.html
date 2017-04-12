@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="js/data/atms-in-mile.js"></script>
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      
+       #legend {
+        font-family: Arial, sans-serif;
+        background: #fff;
+        padding: 10px;
+        margin: 10px;
+        border: 3px solid #000;
+      }
+      #legend h3 {
+        margin-top: 0;
+      }
+      #legend label {
+	    font-size: small;
+	    font-weight: bold;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="legend"><h3>Legend</h3><hr></div>
+    <script>
+    function CenterControl(controlDiv, map) {
+
+        // Set CSS for the control border.
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#337ab7';
+        controlUI.style.border = '2px solid #337ab7';
+        controlUI.style.borderRadius = '3px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = 'Click to go back';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlText = document.createElement('div');
+        controlText.style.color = 'white';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '16px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = ' < Go Back';
+        controlUI.appendChild(controlText);
+
+        // Setup the click event listeners: simply set the map to Chicago.
+        controlUI.addEventListener('click', function() {
+        	document.location.href = "index-static.html";
+        });
+
+      }
+    
+    	/* Set up legend for map */
+	  var icons = {
+		        hospital: {
+		          name: 'hospital',
+		          color: 'blue'
+		        },
+		        school: {
+		            name: 'school',
+		            color: 'green'
+		        },
+		        desert: {
+		        	name:'ATM Desert',
+		        	color:'red'
+		        }
+	   };
+    
+      var map;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 11,
+          center: {lat: 19.1223194, lng: 72.8903116},
+          mapTypeControl: false,
+          streetViewControl: false,
+        });
+
+		map.data.addGeoJson(JSON.parse(hospital_atm_locations));
+		map.data.addGeoJson(JSON.parse(school_atm_locations));
+		
+		map.data.setStyle(function(feature) {
+          var noofatms = feature.getProperty('noofatms');
+          var title = feature.getProperty('title');
+          var poitype = feature.getProperty('poitype');
+          return {
+        	title:title + "\n 6 ATMs within a mile",
+            icon: getCircle(noofatms,poitype)
+          };
+        });
+		
+		var centerControlDiv = document.createElement('div');
+        var centerControl = new CenterControl(centerControlDiv, map);
+        centerControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(centerControlDiv);
+        
+        var legend = document.getElementById('legend');
+        for (var key in icons) {
+          var type = icons[key];
+          var name = type.name;
+          var color = type.color ;
+          var icon = type.icon;
+          var div = document.createElement('div');
+          div.innerHTML = '<br><label for="'+ name + '" style="color:'+ color + ';">'+ name.toUpperCase() + '</label>';
+          legend.appendChild(div);
+        }
+
+        map.controls[google.maps.ControlPosition.RIGHT_TOP].push(legend);
+        
+      }
+
+      function getCircle(noofatms,poitype) {
+    	var fillColor = (poitype == 'hospital') ? 'blue':'green' ;
+    	var scale = noofatms*4;
+    	if(noofatms < 4) {
+    		  fillColor = 'red';
+    		  scale = noofatms*8;
+    	}
+        return {
+          path: google.maps.SymbolPath.CIRCLE,
+          fillColor: fillColor,
+          fillOpacity: 0.5,
+          scale:scale,
+          strokeColor: 'white',
+          strokeWeight: 1.0
+        };
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARr4qcNnC4gEMD3C8dMIseKDyHksILYYc&callback=initMap">
+    </script>
+  </body>
+</html>
