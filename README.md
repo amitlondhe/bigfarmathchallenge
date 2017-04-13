@@ -2,6 +2,8 @@
 The goal of this challenege is to explore how data science could have helped the whole process of Demonetization smoother.
 As part of this challenge few Primary and secondary questions were suggested. A participant is supposed to come up with analytical approach to answer one or more questions out of those.
 
+#### Visualization @ https://amitlondhe.github.io/bigfarmathchallenge/index-static.html
+
 # Solution
 I have tried to answer few questions mentioned below. In the process I collected data from various sources such as Twitter, News portals and Geospatial data sources (Google Maps and MapMyIndia). The source code is included as well in this repository.
 The actual solution fetches the data required to render visualization dynamically deployed on Apache Solr server. However static version of the same that uses snapshot of the data is being published through this repository.
